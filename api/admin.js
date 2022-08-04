@@ -160,6 +160,33 @@ router.put('/:stdId/:building/useraccept', util.isLoggedin,
     }
   })
 
+  // 출입 권한 거절
+router.delete('/:stdId/:building/userrefuse', util.isLoggedin,
+function(req,res,next){
+  if(req.params.building == '공6'){
+    ReQuest6.findOneAndRemove({stdId:req.params.stdId})
+      .exec(function(err){
+        if(err){
+          res.json(util.successFalse(err));
+        }
+        else{
+          res.json(util.successTrue("권한 부여 거절 성공"))
+        }
+    });
+  }
+  else{
+    ReQuest7.findOneAndRemove({stdId:req.params.stdId})
+      .exec(function(err){
+        if(err){
+          res.json(util.successFalse(err));
+        }
+        else{
+          res.json(util.successTrue("권한 부여 거절 성공"))
+        }
+    });
+  }
+})
+
 //TODO : 출입 요청 DB에서 출입 요청을 허락하는 방법 
 
 module.exports = router;
